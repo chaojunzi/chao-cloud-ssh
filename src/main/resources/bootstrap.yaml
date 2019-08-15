@@ -1,22 +1,43 @@
-server:
-  port: 80
-  
 #日志
 logging.config: classpath:chao-logback.xml
 log.path: /logs/chao/${spring.application.name}
 log.maxHistory: 30
 
-
-#共享文件(功能类型)
+server:
+  port: 9003
+#spring
 spring:
   application:
     name: chao-ssh
+  aop:  
+    auto: true
   output:
     ansi:
-      enabled: always
-  aop:
-    auto: true
-   
+      enabled: always 
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+  datasource:
+    url: jdbc:mysql://localhost:3306/ssh?useSSL=false&useUnicode=true&characterEncoding=UTF8&allowMultiQueries=true&serverTimezone=Asia/Shanghai
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: 123456
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      validation-query: SELECT 1
+      test-on-borrow: true
+      connection-init-sqls: SET NAMES utf8mb4;
+      filter:
+        wall:
+          enabled: false
+  thymeleaf:
+    mode: LEGACYHTML5
+    cache: false   
+  
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl:  com.chao.cloud.common.extra.mybatis.log.Slf4jLogImpl
             
 chao:
   cloud:
