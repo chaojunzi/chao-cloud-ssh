@@ -12,5 +12,5 @@
 websocket 打造网页版 ssh
 
 #   效果图展示
-![Image text](https://github.com/chaojunzi/chao-cloud-ssh/blob/master/screenshot/show1.png)
-![Image text](https://github.com/chaojunzi/chao-cloud-ssh/blob/master/screenshot/show2.png)
+![Image text](screenshot/show1.png)
+![Image text](screenshot/show2.png)
