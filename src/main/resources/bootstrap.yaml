@@ -39,10 +39,3 @@ mybatis-plus:
     map-underscore-to-camel-case: true
     log-impl:  com.chao.cloud.common.extra.mybatis.log.Slf4jLogImpl
             
-chao:
-  cloud:
-    ssh:
-      host: 127.0.0.1
-      username: chao #ssh 用户名
-      password: 123456 #ssh 密码
-      port: 22

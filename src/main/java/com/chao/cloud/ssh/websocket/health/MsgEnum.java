@@ -13,6 +13,7 @@ public enum MsgEnum {
 	START(1), // 开始连接
 	TIPS(2), // 提示
 	HEALTH(3), // 健康检查
+	RECEIVE(4), // 接收消息
 	;
 
 	public Integer type;

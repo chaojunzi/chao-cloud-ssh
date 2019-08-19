@@ -6,7 +6,6 @@ import java.util.Date;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.Version;
 
@@ -37,16 +36,6 @@ public class XcConfig implements Serializable {
 	private Integer groupId;
 
 	/**
-	 * 作者
-	 */
-	private String author;
-
-	/**
-	 * 包名
-	 */
-	private String packageName;
-
-	/**
 	 * 标题
 	 */
 	private String title;
@@ -62,12 +51,6 @@ public class XcConfig implements Serializable {
 	private Integer port;
 
 	/**
-	 * 数据库名称
-	 */
-	@TableField("`database`")
-	private String database;
-
-	/**
 	 * 用户名
 	 */
 	private String username;
@@ -76,11 +59,6 @@ public class XcConfig implements Serializable {
 	 * 密码
 	 */
 	private String password;
-
-	/**
-	 * 数据库类型 1.mysql
-	 */
-	private Integer type;
 
 	/**
 	 * 乐观锁

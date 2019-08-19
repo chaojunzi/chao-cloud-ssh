@@ -5,6 +5,15 @@ layui.use([ 'layer', 'jquery' ], function() {
 });
 
 /**
+ * 自定义全局参数
+ */
+var adminConfig = {
+	logoTitle : 'SSH-控制台', // 主页左上角logo 标题
+	headImg : '/favicon.ico',// 头像
+	footer : 'Copyright @2019 Chao Junzi',// 页脚
+}
+
+/**
  * 不刷新当前页
  * 
  * @param url

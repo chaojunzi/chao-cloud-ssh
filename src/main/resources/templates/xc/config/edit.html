@@ -18,22 +18,6 @@
 		</div>
 		<!--  -->
 		<div class="layui-form-item">
-			<label class="layui-form-label">作者：</label>
-			<div class="layui-input-block">
-				<input class="layui-input" lay-verify="required" autocomplete="off" id="author"
-					th:value="${xcConfig.author}" name="author" placeholder="请输入作者">
-			</div>
-		</div>
-		<!--  -->
-		<div class="layui-form-item">
-			<label class="layui-form-label">包名：</label>
-			<div class="layui-input-block">
-				<input id="packageName" name="packageName" placeholder="请输入包名" class="layui-input"
-					th:value="${xcConfig.packageName}" lay-verify="required" autocomplete="off">
-			</div>
-		</div>
-		<!--  -->
-		<div class="layui-form-item">
 			<label class="layui-form-label">标题：</label>
 			<div class="layui-input-block">
 				<input class="layui-input" lay-verify="required" autocomplete="off" id="title"
@@ -49,17 +33,9 @@
 				</div>
 				<div class="layui-form-mid">:</div>
 				<div class="layui-input-inline" style="width: 100px;">
-					<input id="port" name="port" placeholder="端口" value="3306" autocomplete="off"
-						class="layui-input" th:value="${xcConfig.port}" lay-verify="required">
+					<input id="port" name="port" placeholder="端口" autocomplete="off" class="layui-input"
+						th:value="${xcConfig.port}" lay-verify="required">
 				</div>
-			</div>
-		</div>
-		<!--  -->
-		<div class="layui-form-item">
-			<label class="layui-form-label">数据库：</label>
-			<div class="layui-input-block">
-				<input class="layui-input" lay-verify="required" autocomplete="off" id="database"
-					th:value="${xcConfig.database}" name="database" placeholder="请输入数据库名称">
 			</div>
 		</div>
 		<!--  -->
@@ -105,7 +81,7 @@
 				$.ajax({
 					cache : true,
 					type : "POST",
-					url : "/generator/test",
+					url : "/ssh/test",
 					data : data.field,
 					success : function(data) {
 						if (data.retCode == '0000') {

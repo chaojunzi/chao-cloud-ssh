@@ -16,22 +16,6 @@
 		</div>
 		<!--  -->
 		<div class="layui-form-item">
-			<label class="layui-form-label">作者：</label>
-			<div class="layui-input-block">
-				<input id="author" name="author" th:value="${session.user.nickName}" placeholder="请输入作者"
-					class="layui-input" lay-verify="required" autocomplete="off">
-			</div>
-		</div>
-		<!--  -->
-		<div class="layui-form-item">
-			<label class="layui-form-label">包名：</label>
-			<div class="layui-input-block">
-				<input id="packageName" name="packageName" placeholder="请输入包名" class="layui-input"
-					lay-verify="required" autocomplete="off">
-			</div>
-		</div>
-		<!--  -->
-		<div class="layui-form-item">
 			<label class="layui-form-label">标题：</label>
 			<div class="layui-input-block">
 				<input id="title" name="title" placeholder="请输入标题" class="layui-input" lay-verify="required"
@@ -47,17 +31,9 @@
 				</div>
 				<div class="layui-form-mid">:</div>
 				<div class="layui-input-inline" style="width: 100px;">
-					<input id="port" name="port" placeholder="端口" value="3306" autocomplete="off"
-						class="layui-input" lay-verify="required">
+					<input id="port" name="port" placeholder="端口" value="22" autocomplete="off" class="layui-input"
+						lay-verify="required">
 				</div>
-			</div>
-		</div>
-		<!--  -->
-		<div class="layui-form-item">
-			<label class="layui-form-label">数据库：</label>
-			<div class="layui-input-block">
-				<input id="database" name="database" placeholder="请输入数据库名称" class="layui-input"
-					lay-verify="required" autocomplete="off">
 			</div>
 		</div>
 		<!--  -->
@@ -104,7 +80,7 @@
 				$.ajax({
 					cache : true,
 					type : "POST",
-					url : "/generator/test",
+					url : "/ssh/test",
 					data : data.field,
 					success : function(data) {
 						if (data.retCode == '0000') {

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="include::header"></head>
+<body>
+	<div id="content_term"></div>
+	<input id="key" type="hidden" th:value="'/ssh/'+${id}+'@'+${session.user.id}">
+	<div th:include="include::footer"></div>
+	<script src="/js/term.js"></script>
+	<script type="text/javascript">
+		layui.use([ 'layer', 'jquery' ], function() {
+			var $ = layui.$, layer = layui.layer;
+			temp = '';
+			// 计算控制台的高度和宽度
+			$width = document.documentElement.clientWidth;
+			$height = document.documentElement.clientWidth;
+			console.log($width, $height);
+			// 创建websocket连接
+			createWebSocket();
+			// --------------------------------------------------------------
+			// 创建Websocket连接
+			// --------------------------------------------------------------
+			function createWebSocket() {
+				// 连接服务器
+				var host = window.location.host;
+				var client = new WebSocket("ws://" + host + $("#key").val());
+				var term = null;
+
+				// 刚刚打开连接
+				client.onopen = function(evt) {
+					console.log("Connection open ...");
+					// 创建Term的控制台]
+					term = new Terminal({
+						cols : Math.floor($width / 6.75),
+						rows : Math.floor($height / 26),
+						screenKeys : false,
+						useStyle : true,
+						cursorBlink : true,
+						convertEol : true
+					});
+					// 打开指定的term
+					term.open($("#content_term").empty()[0]);
+
+					term.write('\x1b[31mWelcome to term.js!\x1b[m\r\n');
+					term.write('github--->https://github.com/xtermjs/xterm.js\n');
+					term.write('auth:超 \n');
+					// 回车
+					term.write('\r\n');
+					// term.on方法就是实时监控输入的字段，
+					term.on('data', function(data) {
+						client.send(data);
+						/*console.log(data);
+						temp += data;
+						if (data == '\r') {
+							// 回车
+							term.write('\r\n');
+							console.log(temp);
+							temp = '';
+							return false;
+						}
+						term.write(data);*/
+					});
+				};
+
+				// 接收消息的情况
+				client.onmessage = function(evt) {
+					console.log("Received Message: " + evt.data);
+					var r = JSON.parse(evt.data);
+					console.log(r);
+					switch (r.type) {
+					case 0:// 关闭-已经登录
+					case 1:// 开始连接
+					case 2://  提示
+						layer.msg(r.msg);
+						break;
+					case 4:// 写数据到term 控制台
+						term.write(r.msg);
+						break;
+					}
+				};
+				// 关闭连接的情况
+				client.onclose = function(evt) {
+					console.log("连接关闭");
+				};
+
+				// 连接失败的情况
+				client.onerror = function(event) {
+					console.log("连接失败");
+				};
+			}
+		});
+	</script>
+</body>
+</html>

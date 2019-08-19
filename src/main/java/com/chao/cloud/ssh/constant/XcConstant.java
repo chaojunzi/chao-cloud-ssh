@@ -15,7 +15,15 @@ public interface XcConstant {
 
 	List<String> ADMIN_USER_NAME = CollUtil.toList("xuechao");
 
-	String ADMIN_MENU = "<a link=\"/xc/user\" href=\"javascript:;\">用户管理</a>";
+	String ADMIN_MENU = "<a link=\"/xc/user\" href=\"javascript:;\">用户</a>";
+
+	Integer TOP_ID = 0;
+
+	String TOP_ICON = "layui-icon layui-icon-link";
+
+	String CHILDREN_ICON = "layui-icon layui-icon-circle-dot";
+
+	String HREF_TEMPLATE = "/ssh/conn?id={}";
 
 	/**
 	 * 状态

@@ -11,6 +11,7 @@ import com.chao.cloud.common.exception.BusinessException;
 import com.chao.cloud.ssh.websocket.health.MsgEnum;
 import com.chao.cloud.ssh.websocket.health.WsMsgDTO;
 
+import cn.hutool.core.io.IoUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
 import cn.hutool.log.StaticLog;
@@ -45,6 +46,7 @@ public abstract class BaseWsSocket<T> {
 	protected void onClose() {
 		webSocketSet.remove(this.sid); // 从set中删除
 		StaticLog.info("{}:有一连接关闭！当前在线人数为:{}", serverName(), webSocketSet.size());
+		IoUtil.close(session);
 	}
 
 	/**
@@ -57,6 +59,8 @@ public abstract class BaseWsSocket<T> {
 	}
 
 	protected void onError(Session session, Throwable error) {
+		IoUtil.close(session);
+		IoUtil.close(this.session);
 		StaticLog.error("{}:发生错误--->{}", serverName(), error);
 	}
 

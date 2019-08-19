@@ -10,15 +10,17 @@ import javax.websocket.server.ServerEndpoint;
 
 import org.springframework.stereotype.Component;
 
+import com.chao.cloud.common.core.SpringContextUtil;
 import com.chao.cloud.common.exception.BusinessException;
+import com.chao.cloud.ssh.dal.entity.XcConfig;
+import com.chao.cloud.ssh.service.XcConfigService;
 import com.chao.cloud.ssh.websocket.health.MsgEnum;
 import com.chao.cloud.ssh.websocket.health.WsMsgDTO;
 import com.chao.cloud.ssh.websocket.ssh.SshClient;
-import com.chao.cloud.ssh.websocket.ssh.SshConfig;
-import com.chao.cloud.ssh.websocket.ssh.SshServer;
 
+import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.io.IoUtil;
-import cn.hutool.core.lang.Assert;
+import cn.hutool.extra.ssh.JschUtil;
 import cn.hutool.json.JSONUtil;
 import lombok.extern.slf4j.Slf4j;
 
@@ -27,13 +29,8 @@ import lombok.extern.slf4j.Slf4j;
 @ServerEndpoint("/ssh/{sid}")
 public class SshWebSocket extends BaseWsSocket<String> {
 
-	// 客户端
-	SshClient client = null;
+	private SshClient client;
 
-	/**
-	 * 连接建立成功调用的方法
-	 *  
-	 */
 	@OnOpen
 	public void onOpen(Session session, @PathParam("sid") String sid) {
 		boolean exist = super.exist(sid);
@@ -41,16 +38,19 @@ public class SshWebSocket extends BaseWsSocket<String> {
 			this.alreadyLogin(session);
 			return;
 		}
-		sendMessage("连接成功--->");
-		// 做多个用户处理的时候，可以在这个地方来 ,判断用户id和
-		SshConfig sshConfig = new SshConfig();
-		// 配置服务器信息
-		SshServer server = new SshServer(sshConfig.getHost(), sshConfig.getUsername(), sshConfig.getPassword());
-		// 初始化客户端
-		client = new SshClient(server, this);
-		// 连接服务器
-		Assert.state(client.connect(), "服务连接失败[{}:{}]", sshConfig.getHost(), sid);
+		// 连接websocket
 		super.onOpen(session, sid);
+		// 做多个用户处理的时候，可以在这个地方来 ,判断用户id和
+		XcConfigService configService = SpringContextUtil.getBean(XcConfigService.class);
+		XcConfig config = configService.getById(sid.split("@")[0]);
+		if (BeanUtil.isEmpty(config)) {
+			sendMessage(WsMsgDTO.buildMsg(MsgEnum.CLOSE, "无效的连接地址"));
+			return;
+		}
+		com.jcraft.jsch.Session sshSession = JschUtil.createSession(config.getHost(), config.getPort(),
+				config.getUsername(), config.getPassword());
+		// 配置服务器信息
+		this.client = new SshClient(sshSession, this);
 	}
 
 	/**
@@ -62,15 +62,7 @@ public class SshWebSocket extends BaseWsSocket<String> {
 		log.info("收到来自窗口" + sid + "的信息:" + message);
 		// 处理连接
 		try {
-			// 当客户端不为空的情况
-			if (client != null) {
-				if ("exit".equals(message)) {
-					session.close();
-					return;
-				}
-				// 写入前台传递过来的命令，发送到目标服务器上
-				client.write(message);
-			}
+			client.write(message);
 		} catch (Exception e) {
 			log.error("[error--->{}]", e);
 			super.sendMessage("An error occured, websocket is closed.");
@@ -88,16 +80,20 @@ public class SshWebSocket extends BaseWsSocket<String> {
 			}
 		} catch (Exception e) {
 			throw new BusinessException(e.getMessage());
+		} finally {
+			IoUtil.close(client);
 		}
 	}
 
 	@OnClose
 	public void onClose() {
+		IoUtil.close(client);
 		super.onClose();
 	}
 
 	@OnError
 	public void onError(Session session, Throwable error) {
+		IoUtil.close(client);
 		super.onError(session, error);
 	}
 

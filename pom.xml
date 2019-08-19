@@ -11,11 +11,10 @@
 	<artifactId>chao-cloud-ssh</artifactId>
 	<packaging>jar</packaging>
 	<dependencies>
-		<!-- web-socket -->
-		<!-- 远程 shell 脚本测试版 -->
+		<!-- https://mvnrepository.com/artifact/com.jcraft/jsch -->
 		<dependency>
-			<groupId>ch.ethz.ganymed</groupId>
-			<artifactId>ganymed-ssh2</artifactId>
+			<groupId>com.jcraft</groupId>
+			<artifactId>jsch</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>com.github.chaojunzi</groupId>
