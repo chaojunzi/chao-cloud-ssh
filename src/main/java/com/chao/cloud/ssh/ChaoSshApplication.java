@@ -3,15 +3,14 @@ package com.chao.cloud.ssh;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.socket.server.standard.ServerEndpointExporter;
 
-import com.chao.cloud.common.config.exception.EnableGlobalException;
-import com.chao.cloud.common.config.web.EnableWeb;
 import com.chao.cloud.common.extra.mybatis.annotation.EnableMybatisPlus;
 import com.chao.cloud.common.extra.token.annotation.EnableFormToken;
+import com.chao.cloud.common.web.annotation.EnableGlobalException;
+import com.chao.cloud.common.web.annotation.EnableWeb;
 
 /**
  * ssh-web
@@ -21,7 +20,6 @@ import com.chao.cloud.common.extra.token.annotation.EnableFormToken;
  * @version 1.0.7
  */
 @SpringBootApplication
-@EnableCaching // 缓存
 @EnableWeb // web
 @EnableGlobalException // 全局异常处理
 @EnableFormToken // token

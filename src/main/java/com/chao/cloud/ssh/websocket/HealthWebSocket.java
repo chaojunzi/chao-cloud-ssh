@@ -17,9 +17,9 @@ import javax.websocket.server.ServerEndpoint;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import com.chao.cloud.common.config.web.HealthController;
-import com.chao.cloud.common.config.web.HealthController.CoreParam;
 import com.chao.cloud.common.exception.BusinessException;
+import com.chao.cloud.common.web.HealthController;
+import com.chao.cloud.common.web.HealthController.CoreParam;
 import com.chao.cloud.ssh.websocket.health.MsgEnum;
 import com.chao.cloud.ssh.websocket.health.WsMsgDTO;
 
