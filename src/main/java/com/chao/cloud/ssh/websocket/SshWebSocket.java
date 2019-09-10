@@ -31,7 +31,6 @@ public class SshWebSocket extends BaseWsSocket<String> {
 
 	private SshClient client;
 
-	@Override
     @OnOpen
 	public void onOpen(Session session, @PathParam("sid") String sid) {
 		boolean exist = super.exist(sid);
@@ -40,7 +39,7 @@ public class SshWebSocket extends BaseWsSocket<String> {
 			return;
 		}
 		// 连接websocket
-		super.onOpen(session, sid);
+		super.open(session, sid);
 		// 做多个用户处理的时候，可以在这个地方来 ,判断用户id和
 		XcConfigService configService = SpringContextUtil.getBean(XcConfigService.class);
 		XcConfig config = configService.getById(sid.split("@")[0]);

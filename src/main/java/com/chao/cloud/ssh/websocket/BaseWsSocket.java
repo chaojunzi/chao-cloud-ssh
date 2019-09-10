@@ -1,20 +1,17 @@
 package com.chao.cloud.ssh.websocket;
 
-import java.io.IOException;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
-import javax.websocket.Session;
-import javax.websocket.server.PathParam;
-
-import com.chao.cloud.common.exception.BusinessException;
-import com.chao.cloud.ssh.websocket.health.MsgEnum;
-import com.chao.cloud.ssh.websocket.health.WsMsgDTO;
-
 import cn.hutool.core.io.IoUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
 import cn.hutool.log.StaticLog;
+import com.chao.cloud.common.exception.BusinessException;
+import com.chao.cloud.ssh.websocket.health.MsgEnum;
+import com.chao.cloud.ssh.websocket.health.WsMsgDTO;
+
+import javax.websocket.Session;
+import java.io.IOException;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public abstract class BaseWsSocket<T> {
 
@@ -29,14 +26,15 @@ public abstract class BaseWsSocket<T> {
     /**
      * 连接建立成功调用的方法
      */
-    protected void onOpen(Session session, T sid) {
+    public final void open(Session session, T sid) {
         this.session = session;
         webSocketSet.put(sid, this); // 加入set中
         this.sid = sid;
         try {
             StaticLog.info("[{}:有新用户开始连接:user={},当前在线人数为:{}]", serverName(), sid, webSocketSet.size());
             sendMessage(WsMsgDTO.buildMsg(MsgEnum.START, "连接成功!"));
-        } catch (Exception e) { StaticLog.error("[{}:user={},websocket IO异常:{}]", serverName(), sid, e.getMessage());
+        } catch (Exception e) {
+            StaticLog.error("[{}:user={},websocket IO异常:{}]", serverName(), sid, e.getMessage());
         }
     }
 

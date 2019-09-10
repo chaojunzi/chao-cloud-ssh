@@ -1,32 +1,25 @@
 package com.chao.cloud.ssh.websocket;
 
-import java.io.IOException;
-import java.util.Collection;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import javax.websocket.OnClose;
-import javax.websocket.OnError;
-import javax.websocket.OnMessage;
-import javax.websocket.OnOpen;
-import javax.websocket.Session;
-import javax.websocket.server.PathParam;
-import javax.websocket.server.ServerEndpoint;
-
-import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Component;
-
+import cn.hutool.core.collection.CollUtil;
+import cn.hutool.json.JSONUtil;
+import cn.hutool.log.StaticLog;
 import com.chao.cloud.common.exception.BusinessException;
 import com.chao.cloud.common.web.HealthController;
 import com.chao.cloud.common.web.HealthController.CoreParam;
 import com.chao.cloud.ssh.websocket.health.MsgEnum;
 import com.chao.cloud.ssh.websocket.health.WsMsgDTO;
-
-import cn.hutool.core.collection.CollUtil;
-import cn.hutool.json.JSONUtil;
-import cn.hutool.log.StaticLog;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
+
+import javax.websocket.*;
+import javax.websocket.server.PathParam;
+import javax.websocket.server.ServerEndpoint;
+import java.io.IOException;
+import java.util.Collection;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * 单聊
@@ -54,7 +47,6 @@ public class HealthWebSocket extends BaseWsSocket<Integer> {
 	 * 连接建立成功调用的方法
 	 *  
 	 */
-	@Override
 	@OnOpen
 	public void onOpen(Session session, @PathParam("sid") Integer sid) {
 		boolean exist = super.exist(sid);
@@ -62,7 +54,7 @@ public class HealthWebSocket extends BaseWsSocket<Integer> {
 			this.alreadyLogin(session);
 			return;
 		}
-		super.onOpen(session, sid);
+		super.open(session, sid);
 	}
 
 	/**
