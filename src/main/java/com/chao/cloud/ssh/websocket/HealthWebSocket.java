@@ -54,6 +54,7 @@ public class HealthWebSocket extends BaseWsSocket<Integer> {
 	 * 连接建立成功调用的方法
 	 *  
 	 */
+	@Override
 	@OnOpen
 	public void onOpen(Session session, @PathParam("sid") Integer sid) {
 		boolean exist = super.exist(sid);
@@ -67,7 +68,7 @@ public class HealthWebSocket extends BaseWsSocket<Integer> {
 	/**
 	 * 收到客户端消息后调用的方法
 	 *
-	 * @param message 客户端发送过来的消息
+	 * @param msg 客户端发送过来的消息
 	 * @throws IOException */
 	@OnMessage
 	public void onMessage(String msg, Session session) {

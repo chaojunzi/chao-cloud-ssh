@@ -31,7 +31,8 @@ public class SshWebSocket extends BaseWsSocket<String> {
 
 	private SshClient client;
 
-	@OnOpen
+	@Override
+    @OnOpen
 	public void onOpen(Session session, @PathParam("sid") String sid) {
 		boolean exist = super.exist(sid);
 		if (exist) {// 关闭连接
