@@ -1,31 +1,36 @@
 package com.chao.cloud.ssh.websocket;
 
-import cn.hutool.core.collection.CollUtil;
-import cn.hutool.json.JSONUtil;
-import cn.hutool.log.StaticLog;
-import com.chao.cloud.common.exception.BusinessException;
-import com.chao.cloud.common.web.HealthController;
-import com.chao.cloud.common.web.HealthController.CoreParam;
-import com.chao.cloud.ssh.websocket.health.MsgEnum;
-import com.chao.cloud.ssh.websocket.health.WsMsgDTO;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Component;
-
-import javax.websocket.*;
-import javax.websocket.server.PathParam;
-import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import javax.websocket.OnClose;
+import javax.websocket.OnError;
+import javax.websocket.OnMessage;
+import javax.websocket.OnOpen;
+import javax.websocket.Session;
+import javax.websocket.server.PathParam;
+import javax.websocket.server.ServerEndpoint;
+
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
+
+import com.chao.cloud.common.exception.BusinessException;
+import com.chao.cloud.common.web.controller.HealthController;
+import com.chao.cloud.common.web.controller.HealthController.CoreParam;
+import com.chao.cloud.ssh.websocket.health.MsgEnum;
+import com.chao.cloud.ssh.websocket.health.WsMsgDTO;
+
+import cn.hutool.core.collection.CollUtil;
+import cn.hutool.json.JSONUtil;
+import cn.hutool.log.StaticLog;
+import lombok.extern.slf4j.Slf4j;
+
 /**
- * 单聊
- * @功能：
- * @author： 薛超
- * @时间： 2019年6月26日
+ * 单聊 @功能： @author： 薛超 @时间： 2019年6月26日
+ * 
  * @version 1.0.0
  */
 @Slf4j
@@ -45,7 +50,7 @@ public class HealthWebSocket extends BaseWsSocket<Integer> {
 
 	/**
 	 * 连接建立成功调用的方法
-	 *  
+	 * 
 	 */
 	@OnOpen
 	public void onOpen(Session session, @PathParam("sid") Integer sid) {
@@ -61,7 +66,8 @@ public class HealthWebSocket extends BaseWsSocket<Integer> {
 	 * 收到客户端消息后调用的方法
 	 *
 	 * @param msg 客户端发送过来的消息
-	 * @throws IOException */
+	 * @throws IOException
+	 */
 	@OnMessage
 	public void onMessage(String msg, Session session) {
 		super.onMessage(msg, session);
@@ -86,6 +92,7 @@ public class HealthWebSocket extends BaseWsSocket<Integer> {
 
 	/**
 	 * 给所有人发送消息
+	 * 
 	 * @param msg
 	 */
 	public void sendAll(WsMsgDTO msg) {
@@ -101,7 +108,7 @@ public class HealthWebSocket extends BaseWsSocket<Integer> {
 
 	/**
 	 * 群发自定义消息
-	 * */
+	 */
 	public void sendMsg(WsMsgDTO msg, Collection<Integer> sids) {
 		StaticLog.info("[push-msg-user={},msg={}.]", sids, msg);
 		webSocketSet.forEach((sid, item) -> {

@@ -10,7 +10,6 @@ import javax.websocket.server.ServerEndpoint;
 
 import org.springframework.stereotype.Component;
 
-import com.chao.cloud.common.core.SpringContextUtil;
 import com.chao.cloud.common.exception.BusinessException;
 import com.chao.cloud.ssh.dal.entity.XcConfig;
 import com.chao.cloud.ssh.service.XcConfigService;
@@ -20,6 +19,7 @@ import com.chao.cloud.ssh.websocket.ssh.SshClient;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.io.IoUtil;
+import cn.hutool.extra.spring.SpringUtil;
 import cn.hutool.extra.ssh.JschUtil;
 import cn.hutool.json.JSONUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -31,7 +31,7 @@ public class SshWebSocket extends BaseWsSocket<String> {
 
 	private SshClient client;
 
-    @OnOpen
+	@OnOpen
 	public void onOpen(Session session, @PathParam("sid") String sid) {
 		boolean exist = super.exist(sid);
 		if (exist) {// 关闭连接
@@ -41,7 +41,7 @@ public class SshWebSocket extends BaseWsSocket<String> {
 		// 连接websocket
 		super.open(session, sid);
 		// 做多个用户处理的时候，可以在这个地方来 ,判断用户id和
-		XcConfigService configService = SpringContextUtil.getBean(XcConfigService.class);
+		XcConfigService configService = SpringUtil.getBean(XcConfigService.class);
 		XcConfig config = configService.getById(sid.split("@")[0]);
 		if (BeanUtil.isEmpty(config)) {
 			sendMessage(WsMsgDTO.buildMsg(MsgEnum.CLOSE, "无效的连接地址"));
@@ -56,7 +56,8 @@ public class SshWebSocket extends BaseWsSocket<String> {
 	/**
 	 * 收到客户端消息后调用的方法
 	 *
-	 * @param message 客户端发送过来的消息*/
+	 * @param message 客户端发送过来的消息
+	 */
 	@OnMessage
 	public void onMessage(String message, Session session) {
 		log.info("收到来自窗口" + sid + "的信息:" + message);

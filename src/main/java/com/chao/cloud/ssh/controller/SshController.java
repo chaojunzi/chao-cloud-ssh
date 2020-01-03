@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.chao.cloud.common.entity.Response;
 import com.chao.cloud.common.util.EntityUtil;
-import com.chao.cloud.common.web.HealthController;
-import com.chao.cloud.common.web.HealthController.CoreParam;
+import com.chao.cloud.common.web.controller.HealthController;
+import com.chao.cloud.common.web.controller.HealthController.CoreParam;
 import com.chao.cloud.ssh.constant.XcConstant;
 import com.chao.cloud.ssh.dal.entity.XcConfig;
 import com.chao.cloud.ssh.dal.entity.XcGroup;
@@ -32,9 +32,8 @@ import cn.hutool.extra.ssh.JschUtil;
 import cn.hutool.json.JSONUtil;
 
 /**
- * @功能：
- * @author： 超君子
- * @时间：2019-07-23
+ * @功能： @author： 超君子 @时间：2019-07-23
+ * 
  * @version 1.0.0
  */
 @RequestMapping
@@ -48,6 +47,7 @@ public class SshController extends BaseController {
 
 	/**
 	 * 首页
+	 * 
 	 * @return
 	 */
 	@RequestMapping({ "", "/", "/index" })
@@ -57,6 +57,7 @@ public class SshController extends BaseController {
 
 	/**
 	 * 主页面
+	 * 
 	 * @return
 	 */
 	@RequestMapping("main")
@@ -68,6 +69,7 @@ public class SshController extends BaseController {
 
 	/**
 	 * ssh连接页面
+	 * 
 	 * @param m
 	 * @param id
 	 * @return
@@ -95,6 +97,7 @@ public class SshController extends BaseController {
 
 	/**
 	 * 系统左侧导航菜单
+	 * 
 	 * @return
 	 */
 	@RequestMapping("/menu/leftList")
