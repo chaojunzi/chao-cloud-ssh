@@ -1,7 +1,7 @@
 #日志
-logging.config: classpath:chao-logback.xml
-log.path: /logs/chao/${spring.application.name}
-log.maxHistory: 30
+logging:
+  file:
+    path: ../logs
 
 server:
   port: 9003
@@ -17,19 +17,15 @@ spring:
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT+8
-  datasource:
-    url: jdbc:mysql://localhost:3306/ssh?useSSL=false&useUnicode=true&characterEncoding=UTF8&allowMultiQueries=true&serverTimezone=Asia/Shanghai
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    username: root
-    password: 123456
+  datasource: #数据库连接设置
+    platform: h2
     type: com.alibaba.druid.pool.DruidDataSource
-    druid:
-      validation-query: SELECT 1
-      test-on-borrow: true
-      connection-init-sqls: SET NAMES utf8mb4;
-      filter:
-        wall:
-          enabled: false
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:ssh;MODE=MYSQL
+    username: root
+    password: root
+    schema: classpath:sql/schema.sql
+    data: classpath:sql/data.sql
   thymeleaf:
     mode: LEGACYHTML5
     cache: false   

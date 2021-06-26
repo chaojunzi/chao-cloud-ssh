@@ -1,0 +1,63 @@
+<!-- debug="true" error时打印内部状态信息 -->
+<!-- packagingData="true" 异常打印堆栈信息时，显示package及版本信息 -->
+<!-- 默认一分钟检查配置文件一次 -->
+<configuration scan="false" scanPeriod="30 seconds">
+
+	<!--定义日志文件的存储地址 -->
+	<springProperty name="LOG_HOME"  scope="context" source="logging.file.path" />
+	<appender
+		name="TimeRollingFILE"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<rollingPolicy
+			class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<!-- daily rollover -->
+			<fileNamePattern>${LOG_HOME}/logFile.%d{yyyy-MM-dd}.log</fileNamePattern>
+			<!-- keep 30 days' worth of history capped at 3GB total size -->
+			<maxHistory>30</maxHistory>
+			<totalSizeCap>3GB</totalSizeCap>
+		</rollingPolicy>
+		<encoder>
+			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %M - %msg%n</pattern>
+		</encoder>
+	</appender>
+	<appender
+		name="TimeRollingFILE_ERROR"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<!--过滤器,只打ERROR级别的日志 -->
+		<filter class="ch.qos.logback.classic.filter.LevelFilter">
+			<level>ERROR</level>
+			<onMatch>ACCEPT</onMatch>
+			<onMismatch>DENY</onMismatch>
+		</filter>
+		<rollingPolicy
+			class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<!-- daily rollover -->
+			<fileNamePattern>${LOG_HOME}/logFileErr.%d{yyyy-MM-dd}.log</fileNamePattern>
+			<!-- keep 30 days' worth of history capped at 3GB total size -->
+			<maxHistory>30</maxHistory>
+			<totalSizeCap>3GB</totalSizeCap>
+		</rollingPolicy>
+		<encoder>
+			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %M - %msg%n</pattern>
+		</encoder>
+	</appender>
+	<appender
+		name="STDOUT"
+		class="ch.qos.logback.core.ConsoleAppender"
+		target="System.out">
+		<!-- encoders are assigned the type ch.qos.logback.classic.encoder.PatternLayoutEncoder 
+			by default -->
+		<encoder>
+			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %M - %msg%n</pattern>
+		</encoder>
+	</appender>
+	<!-- additivity="false" -->
+	<!-- 主程序Log -->
+	<logger name="com.aisino.groupinvoice" level="debug"></logger>  
+
+	<root level="info">
+		<appender-ref ref="STDOUT" />
+		<appender-ref ref="TimeRollingFILE" />
+		<appender-ref ref="TimeRollingFILE_ERROR" />
+	</root>
+</configuration>
